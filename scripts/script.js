@@ -2,7 +2,6 @@ const categoriesEl = document.getElementById("categories");
 const landingForm = document.getElementsByClassName("landing-form");
 const questionsEl = document.getElementsByClassName("game");
 const resultsEl = document.getElementsByClassName("results");
-const bonus = document.getElementById("bonus");
 
 let correct = 0;
 let incorrect = 0;
