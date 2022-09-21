@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles/styles.css" />
+    <script src="scripts/script.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
+    <title>Ultimate Trivia</title>
+  </head>
+  <body>
+    <header class="header">
+      <div class="header__container">
+        <div class="header__logo">Ultimate Trivia</div>
+      </div>
+    </header>
+
+    <main class="main">
+      <form action="/" class="landing-form">
+        <h2 class="landing-form__title">Trivia Settings</h2>
+        <label for="questions_num" class="landing-form__label"
+          >Number of Questions</label
+        >
+        <input
+          name="questions_num"
+          type="number"
+          min="1"
+          max="50"
+          value="5"
+          class="landing-form__input"
+        />
+
+        <label for="" class="landing-form__label">Category</label>
+        <select name="categories" id="categories" class="landing-form__select">
+          <option value="">Don't Mind</option>
+        </select>
+
+        <label for="" class="landing-form__label">Difficulty</label>
+        <select name="difficulty" id="difficulty" class="landing-form__select">
+          <option value="">Don't Mind</option>
+          <option value="easy">Easy</option>
+          <option value="medium">Medium</option>
+          <option value="hard">Hard</option>
+        </select>
+
+        <label for="" class="landing-form__label">Question Type</label>
+        <select
+          name="question_type"
+          id="question_type"
+          class="landing-form__select"
+        >
+          <option value="">Don't Mind</option>
+          <option value="multiple">Multiple Choice</option>
+          <option value="boolean">True/False</option>
+        </select>
+        <button class="landing-form__button">start</button>
+      </form>
+
+      <div class="game"></div>
+
+      <div class="results"></div>
+    </main>
+  </body>
+</html>

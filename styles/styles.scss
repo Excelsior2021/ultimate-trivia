@@ -1,0 +1,192 @@
+@import url("https://fonts.googleapis.com/css2?family=Rubik+Maze&display=swap");
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  font-size: 1.6rem;
+  font-family: sans-serif;
+}
+
+.header {
+  background-color: azure;
+  &__container {
+    text-align: center;
+  }
+
+  &__logo {
+    font-family: "Rubik Maze";
+    font-size: 6rem;
+    padding: 2rem;
+  }
+}
+
+.main {
+  display: flex;
+  justify-content: space-between;
+  padding: 100px;
+}
+
+.landing-form {
+  border: 2px solid black;
+  border-radius: 4px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: fit-content;
+  margin: 1rem;
+
+  &__title {
+    font-family: "Rubik Maze";
+    font-weight: normal;
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+
+  &__label {
+    margin-bottom: 0.5rem;
+  }
+
+  &__input,
+  &__select {
+    width: 25rem;
+    margin-bottom: 2rem;
+    padding: 0.5rem;
+  }
+
+  &__button {
+    font-family: "Rubik Maze";
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    background-color: lightgreen;
+    width: 20rem;
+    border: none;
+    border-radius: 4px;
+    margin: 1rem;
+    padding: 1rem;
+    align-self: center;
+    cursor: pointer;
+
+    &:hover {
+      background-color: rgb(178, 236, 178);
+    }
+  }
+}
+
+.game {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  &__questions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 2rem;
+
+    &--unclickable {
+      pointer-events: none;
+    }
+
+    &--hidden {
+      display: none;
+    }
+  }
+
+  &__title {
+    font-family: "Rubik Maze";
+    font-weight: normal;
+    font-size: 4rem;
+  }
+
+  &__question {
+    margin: 1rem 0;
+    font-size: 1.8rem;
+  }
+
+  &__answer {
+    background-color: white;
+    width: fit-content;
+    min-width: 15rem;
+    border: 2px solid black;
+    border-radius: 4px;
+    margin: 1rem 0;
+    padding: 1rem;
+    cursor: pointer;
+
+    &:hover {
+      background-color: azure;
+    }
+
+    &--correct {
+      background-color: green;
+
+      &:hover {
+        background-color: green;
+      }
+    }
+    &--incorrect {
+      background-color: red;
+
+      &:hover {
+        background-color: red;
+      }
+    }
+  }
+
+  &__next {
+    display: inline-block;
+    background-color: transparent;
+    font-family: "Rubik Maze";
+    font-size: 2rem;
+    text-transform: capitalize;
+    border: 0.5px solid lightgrey;
+    border-radius: 4px;
+    min-width: 15rem;
+    margin: 0 20px;
+    margin-top: 20px;
+    padding: 1rem;
+    cursor: pointer;
+    pointer-events: all;
+
+    &:hover {
+      color: blue;
+      transform: scale(1.1);
+    }
+
+    &--prev {
+      &:hover {
+        color: red;
+        transform: scale(1.1);
+      }
+    }
+  }
+}
+
+.results {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  &__statement,
+  &__feedback {
+    font-family: "Rubik Maze";
+    font-weight: bold;
+    letter-spacing: 0.1rem;
+    background-color: azure;
+    border: 5px solid azure;
+    border-radius: 4px;
+    margin: 1rem;
+    padding: 1rem;
+    font-size: 2.5rem;
+  }
+}
