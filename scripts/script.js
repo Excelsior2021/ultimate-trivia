@@ -21,8 +21,7 @@ const getCategories = () => {
         optionEl.innerText = category.name;
         categoriesEl.appendChild(optionEl);
       })
-    )
-    .catch(console.log("Something went wrong!"));
+    );
 };
 
 landingForm[0].addEventListener("submit", (event) => {
