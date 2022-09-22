@@ -1,5 +1,5 @@
 const categoriesEl = document.getElementById("categories");
-const landingForm = document.getElementsByClassName("landing-form");
+const landingForm = document.getElementsByClassName("form");
 const questionsEl = document.getElementsByClassName("game");
 const resultsEl = document.getElementsByClassName("results");
 
@@ -21,7 +21,8 @@ const getCategories = () => {
         optionEl.innerText = category.name;
         categoriesEl.appendChild(optionEl);
       })
-    );
+    )
+    .catch(console.log("Something went wrong!"));
 };
 
 landingForm[0].addEventListener("submit", (event) => {

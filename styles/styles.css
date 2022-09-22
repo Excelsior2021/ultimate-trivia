@@ -34,7 +34,7 @@ body {
   padding: 100px;
 }
 
-.landing-form {
+.form {
   border: 2px solid black;
   border-radius: 4px;
   padding: 2rem;
@@ -46,21 +46,21 @@ body {
   width: fit-content;
   margin: 1rem;
 }
-.landing-form__title {
+.form__title {
   font-family: "Rubik Maze";
   font-weight: normal;
   font-size: 3rem;
   margin-bottom: 1rem;
 }
-.landing-form__label {
+.form__label {
   margin-bottom: 0.5rem;
 }
-.landing-form__input, .landing-form__select {
+.form__input, .form__select {
   width: 25rem;
   margin-bottom: 2rem;
   padding: 0.5rem;
 }
-.landing-form__button {
+.form__button {
   font-family: "Rubik Maze";
   font-size: 1.5rem;
   text-transform: uppercase;
@@ -73,8 +73,9 @@ body {
   align-self: center;
   cursor: pointer;
 }
-.landing-form__button:hover {
+.form__button:hover {
   background-color: rgb(178, 236, 178);
+  transform: scale(1.1);
 }
 
 .game {

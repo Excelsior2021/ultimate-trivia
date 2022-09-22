@@ -18,44 +18,40 @@
     </header>
 
     <main class="main">
-      <form action="/" class="landing-form">
-        <h2 class="landing-form__title">Trivia Settings</h2>
-        <label for="questions_num" class="landing-form__label"
+      <form action="/" class="form">
+        <h2 class="form__title">Settings</h2>
+        <label for="questions_num" class="form__label"
           >Number of Questions</label
         >
         <input
           name="questions_num"
           type="number"
-          min="1"
+          min="5"
           max="50"
           value="5"
-          class="landing-form__input"
+          class="form__input"
         />
 
-        <label for="" class="landing-form__label">Category</label>
-        <select name="categories" id="categories" class="landing-form__select">
+        <label for="" class="form__label">Category</label>
+        <select name="categories" id="categories" class="form__select">
           <option value="">Don't Mind</option>
         </select>
 
-        <label for="" class="landing-form__label">Difficulty</label>
-        <select name="difficulty" id="difficulty" class="landing-form__select">
+        <label for="" class="form__label">Difficulty</label>
+        <select name="difficulty" id="difficulty" class="form__select">
           <option value="">Don't Mind</option>
           <option value="easy">Easy</option>
           <option value="medium">Medium</option>
           <option value="hard">Hard</option>
         </select>
 
-        <label for="" class="landing-form__label">Question Type</label>
-        <select
-          name="question_type"
-          id="question_type"
-          class="landing-form__select"
-        >
+        <label for="" class="form__label">Question Type</label>
+        <select name="question_type" id="question_type" class="form__select">
           <option value="">Don't Mind</option>
           <option value="multiple">Multiple Choice</option>
           <option value="boolean">True/False</option>
         </select>
-        <button class="landing-form__button">start</button>
+        <button class="form__button">start</button>
       </form>
 
       <div class="game"></div>
