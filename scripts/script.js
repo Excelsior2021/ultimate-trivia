@@ -1,7 +1,8 @@
 const categoriesEl = document.getElementById("categories");
-const landingForm = document.getElementsByClassName("form");
+const form = document.getElementsByClassName("form");
 const questionsEl = document.getElementsByClassName("game");
 const resultsEl = document.getElementsByClassName("results");
+const gameEl = document.getElementsByClassName("game");
 
 let correct = 0;
 let incorrect = 0;
@@ -24,7 +25,7 @@ const getCategories = () => {
     );
 };
 
-landingForm[0].addEventListener("submit", (event) => {
+form[0].addEventListener("submit", (event) => {
   event.preventDefault();
 
   questionsEl[0].innerHTML = "";
@@ -45,6 +46,9 @@ landingForm[0].addEventListener("submit", (event) => {
       `https://opentdb.com/api.php?amount=${amount}&category=${category}&difficulty=${difficulty}&type=${type}`
     )
     .then((res) => {
+      form[0].classList.add("form--hidden");
+      gameEl[0].classList.remove("game--hidden");
+      gameEl[0].classList.add("game--format");
       return res.data.results;
     })
     .then((results) => {
@@ -91,12 +95,12 @@ landingForm[0].addEventListener("submit", (event) => {
         shuffledAnswers.forEach((ans) => questionDiv.appendChild(ans));
 
         const buttonDiv = document.createElement("div");
-        buttonDiv.classList.add("game__button-container");
+        buttonDiv.classList.add("game__navigate-container");
 
         if (i !== 1) {
           const prevButton = document.createElement("input");
-          prevButton.classList.add("game__next");
-          prevButton.classList.add("game__next--prev");
+          prevButton.classList.add("game__navigate");
+          prevButton.classList.add("game__navigate--prev");
           prevButton.type = "button";
           prevButton.value = "prev";
           prevButton.addEventListener("click", prevQuestion);
@@ -105,7 +109,8 @@ landingForm[0].addEventListener("submit", (event) => {
 
         if (i !== questionAmount) {
           const nextButton = document.createElement("input");
-          nextButton.classList.add("game__next");
+          nextButton.classList.add("game__navigate");
+          nextButton.classList.add("game__navigate--next");
           nextButton.type = "button";
           nextButton.value = "next";
           nextButton.addEventListener("click", nextQuestion);
@@ -183,17 +188,28 @@ const prevQuestion = () => {
 };
 
 const endGame = () => {
+  gameEl[0].classList.add("game--hidden");
+  resultsEl[0].classList.add("results--format");
   const message = feedback();
   const resultStatement = document.createElement("p");
   resultStatement.classList.add("results__statement");
   resultStatement.innerText = `You got ${correct} out of ${questionAmount} questions right.`;
+  resultStatement.classList.add("results__statement--format");
 
   const resultsFeedback = document.createElement("p");
   resultsFeedback.classList.add("results__feedback");
   resultsFeedback.innerText = message;
 
+  const resultsButton = document.createElement("input");
+  resultsButton.classList.add("results__button");
+  resultsButton.classList.add("game__navigate");
+  resultsButton.type = "button";
+  resultsButton.value = "play again";
+  resultsButton.addEventListener("click", restart);
+
   resultsEl[0].appendChild(resultStatement);
   resultsEl[0].appendChild(resultsFeedback);
+  resultsEl[0].appendChild(resultsButton);
 };
 
 const feedback = () => {
@@ -219,3 +235,13 @@ const feedback = () => {
   }
   return message;
 };
+
+const restart = () => {
+  resultsEl[0].innerHTML = "";
+  gameEl[0].innerHTML = "";
+  gameEl[0].classList.remove("game--format");
+  form[0].classList.remove("form--hidden");
+  resultsEl[0].classList.remove("results--format");
+};
+
+// endGame();
