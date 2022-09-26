@@ -26,6 +26,11 @@ body {
     text-align: center;
   }
 
+  &__link {
+    color: black;
+    text-decoration: none;
+  }
+
   &__logo {
     font-family: "Rubik Maze";
     font-size: 5rem;
