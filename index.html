@@ -18,6 +18,9 @@
     </header>
 
     <main class="main">
+      <p id="message" class="message">
+        Answer all questions to complete the quiz. If unsure, just guess!
+      </p>
       <form action="/" class="form">
         <h2 class="form__title">Settings</h2>
         <label for="questions_num" class="form__label"
@@ -58,5 +61,12 @@
 
       <div class="results"></div>
     </main>
+
+    <button
+      id="game-reset"
+      class="game__answer game__reset game__reset--hidden"
+    >
+      New Quiz
+    </button>
   </body>
 </html>

@@ -12,11 +12,13 @@ html {
 }
 
 body {
+  position: relative;
   font-size: 1.6rem;
   font-family: sans-serif;
   min-width: -webkit-fit-content;
   min-width: -moz-fit-content;
   min-width: fit-content;
+  min-height: 100vh;
 }
 
 .header {
@@ -30,9 +32,28 @@ body {
   font-size: 5rem;
   padding: 1rem 0;
 }
+@media (min-width: 1024px) {
+  .header__logo {
+    font-size: 6rem;
+  }
+}
 
 .main {
-  margin-top: 10%;
+  padding-bottom: 20px;
+}
+
+.message {
+  text-align: center;
+  font-size: 1.5rem;
+  margin: 2rem;
+}
+.message--hidden {
+  display: none;
+}
+@media (min-width: 1024px) {
+  .message {
+    font-size: 1.8rem;
+  }
 }
 
 .form {
@@ -106,12 +127,23 @@ body {
   font-weight: normal;
   font-size: 3rem;
 }
+@media (min-width: 1024px) {
+  .game__title {
+    font-size: 4rem;
+  }
+}
 .game__question {
   text-align: center;
-  margin: 1rem;
-  font-size: 1.4rem;
+  margin: 3rem;
+  font-size: 1.5rem;
+}
+@media (min-width: 1024px) {
+  .game__question {
+    font-size: 1.8rem;
+  }
 }
 .game__answer {
+  font-size: 1.5rem;
   background-color: white;
   width: -webkit-fit-content;
   width: -moz-fit-content;
@@ -119,7 +151,7 @@ body {
   min-width: 15rem;
   border: 2px solid black;
   border-radius: 4px;
-  margin: 1rem 0;
+  margin: 1rem;
   padding: 1rem;
   cursor: pointer;
 }
@@ -139,7 +171,11 @@ body {
   background-color: red;
 }
 .game__navigate-container {
-  margin-top: 20px;
+  margin: 20px 0 50px 0;
+}
+.game__navigate-container--end-game {
+  border: 1px solid red;
+  margin-bottom: 0;
 }
 .game__navigate {
   background-color: transparent;
@@ -163,6 +199,21 @@ body {
   color: red;
   transform: scale(1.1);
 }
+.game__reset {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  color: red;
+  border: 1px solid red;
+  opacity: 0.4;
+}
+.game__reset--hidden {
+  display: none;
+}
+.game__reset:hover {
+  opacity: 1;
+  background-color: rgba(255, 0, 0, 0.15);
+}
 .game--hidden {
   display: none;
 }
@@ -171,6 +222,11 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+@media (min-width: 500px) {
+  .results {
+    max-width: 500px;
+  }
 }
 .results--format {
   margin: 0 auto;
@@ -188,7 +244,14 @@ body {
   font-size: 2.5rem;
 }
 .results__button {
-  max-width: 15rem;
+  min-width: 15rem;
   margin: auto;
   margin-top: 20px;
+}
+.results__button--hidden {
+  display: none;
+}
+.results__button:hover {
+  color: green;
+  transform: scale(1.1);
 }/*# sourceMappingURL=styles.css.map */

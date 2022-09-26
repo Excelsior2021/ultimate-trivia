@@ -13,9 +13,11 @@ html {
 }
 
 body {
+  position: relative;
   font-size: 1.6rem;
   font-family: sans-serif;
   min-width: fit-content;
+  min-height: 100vh;
 }
 
 .header {
@@ -28,11 +30,29 @@ body {
     font-family: "Rubik Maze";
     font-size: 5rem;
     padding: 1rem 0;
+
+    @media (min-width: 1024px) {
+      font-size: 6rem;
+    }
   }
 }
 
 .main {
-  margin-top: 10%;
+  padding-bottom: 20px;
+}
+
+.message {
+  text-align: center;
+  font-size: 1.5rem;
+  margin: 2rem;
+
+  &--hidden {
+    display: none;
+  }
+
+  @media (min-width: 1024px) {
+    font-size: 1.8rem;
+  }
 }
 
 .form {
@@ -116,21 +136,30 @@ body {
     font-family: "Rubik Maze";
     font-weight: normal;
     font-size: 3rem;
+
+    @media (min-width: 1024px) {
+      font-size: 4rem;
+    }
   }
 
   &__question {
     text-align: center;
-    margin: 1rem;
-    font-size: 1.4rem;
+    margin: 3rem;
+    font-size: 1.5rem;
+
+    @media (min-width: 1024px) {
+      font-size: 1.8rem;
+    }
   }
 
   &__answer {
+    font-size: 1.5rem;
     background-color: white;
     width: fit-content;
     min-width: 15rem;
     border: 2px solid black;
     border-radius: 4px;
-    margin: 1rem 0;
+    margin: 1rem;
     padding: 1rem;
     cursor: pointer;
 
@@ -155,7 +184,12 @@ body {
   }
 
   &__navigate-container {
-    margin-top: 20px;
+    margin: 20px 0 50px 0;
+
+    &--end-game {
+      border: 1px solid red;
+      margin-bottom: 0;
+    }
   }
 
   &__navigate {
@@ -183,6 +217,24 @@ body {
     }
   }
 
+  &__reset {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    color: red;
+    border: 1px solid red;
+    opacity: 0.4;
+
+    &--hidden {
+      display: none;
+    }
+
+    &:hover {
+      opacity: 1;
+      background-color: rgba(255, 0, 0, 0.15);
+    }
+  }
+
   &--hidden {
     display: none;
   }
@@ -192,6 +244,10 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
+
+  @media (min-width: 500px) {
+    max-width: 500px;
+  }
 
   &--format {
     margin: 0 auto;
@@ -212,8 +268,17 @@ body {
   }
 
   &__button {
-    max-width: 15rem;
+    min-width: 15rem;
     margin: auto;
     margin-top: 20px;
+
+    &--hidden {
+      display: none;
+    }
+
+    &:hover {
+      color: green;
+      transform: scale(1.1);
+    }
   }
 }

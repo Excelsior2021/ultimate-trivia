@@ -3,6 +3,8 @@ const form = document.getElementsByClassName("form");
 const questionsEl = document.getElementsByClassName("game");
 const resultsEl = document.getElementsByClassName("results");
 const gameEl = document.getElementsByClassName("game");
+const resetEl = document.getElementById("game-reset");
+const messageEl = document.getElementById("message");
 
 let correct = 0;
 let incorrect = 0;
@@ -49,6 +51,8 @@ form[0].addEventListener("submit", (event) => {
       form[0].classList.add("form--hidden");
       gameEl[0].classList.remove("game--hidden");
       gameEl[0].classList.add("game--format");
+      resetEl.classList.remove("game__reset--hidden");
+      messageEl.classList.add("message--hidden");
       return res.data.results;
     })
     .then((results) => {
@@ -190,6 +194,8 @@ const prevQuestion = () => {
 const endGame = () => {
   gameEl[0].classList.add("game--hidden");
   resultsEl[0].classList.add("results--format");
+  resetEl.classList.add("game__reset--hidden");
+
   const message = feedback();
   const resultStatement = document.createElement("p");
   resultStatement.classList.add("results__statement");
@@ -207,8 +213,16 @@ const endGame = () => {
   resultsButton.value = "play again";
   resultsButton.addEventListener("click", restart);
 
+  const reviewButton = document.createElement("input");
+  reviewButton.classList.add("results__button");
+  reviewButton.classList.add("game__navigate");
+  reviewButton.type = "button";
+  reviewButton.value = "review";
+  reviewButton.addEventListener("click", () => reviewQuestions(reviewButton));
+
   resultsEl[0].appendChild(resultStatement);
   resultsEl[0].appendChild(resultsFeedback);
+  resultsEl[0].appendChild(reviewButton);
   resultsEl[0].appendChild(resultsButton);
 };
 
@@ -244,4 +258,16 @@ const restart = () => {
   resultsEl[0].classList.remove("results--format");
 };
 
-// endGame();
+const newQuiz = () => {
+  gameEl[0].classList.add("game--hidden");
+  form[0].classList.remove("form--hidden");
+  resetEl.classList.add("game__reset--hidden");
+};
+
+resetEl.addEventListener("click", newQuiz);
+
+const reviewQuestions = (button) => {
+  resultsEl[0].classList.add("results--hidden");
+  gameEl[0].classList.remove("game--hidden");
+  button.classList.add("results__button--hidden");
+};
