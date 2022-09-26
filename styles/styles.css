@@ -177,10 +177,6 @@ body {
 .game__navigate-container {
   margin: 20px 0 50px 0;
 }
-.game__navigate-container--end-game {
-  border: 1px solid red;
-  margin-bottom: 0;
-}
 .game__navigate {
   background-color: transparent;
   font-family: "Rubik Maze";
