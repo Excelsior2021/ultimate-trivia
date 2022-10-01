@@ -98,8 +98,11 @@ form[0].addEventListener("submit", (event) => {
         questionDiv.appendChild(questionEl);
         shuffledAnswers.forEach((ans) => questionDiv.appendChild(ans));
 
+        const buttonsDiv = document.createElement("div");
         const buttonDiv = document.createElement("div");
-        buttonDiv.classList.add("game__navigate-container");
+        const buttonDivTwo = document.createElement("div");
+
+        buttonsDiv.classList.add("game__navigate-container");
 
         if (i !== 1) {
           const prevButton = document.createElement("input");
@@ -121,14 +124,22 @@ form[0].addEventListener("submit", (event) => {
           buttonDiv.appendChild(nextButton);
         }
 
-        questionDiv.appendChild(buttonDiv);
+        const viewResults = document.createElement("input");
+        viewResults.classList.add("game__navigate");
+        viewResults.classList.add("game__navigate--results");
+        viewResults.type = "button";
+        viewResults.value = "view results";
+        viewResults.addEventListener("click", showResults);
+        buttonDivTwo.appendChild(viewResults);
 
+        buttonsDiv.appendChild(buttonDiv);
+        buttonsDiv.appendChild(buttonDivTwo);
+
+        questionDiv.appendChild(buttonsDiv);
         questionsEl[0].appendChild(questionDiv);
       });
     });
 });
-
-getCategories();
 
 const htmlEntities = (str) => {
   return str
@@ -138,7 +149,10 @@ const htmlEntities = (str) => {
     .replace(/&quot;/g, '"')
     .replace(/&#039;/g, "'")
     .replace(/&pi;/g, "π")
-    .replace(/&Delta;/, "Δ");
+    .replace(/&Delta;/g, "Δ")
+    .replace(/&Deg;/g, "°")
+    .replace(/&ldquo;/g, "“")
+    .replace(/&rdquo;/g, "”");
 };
 
 const shuffleArray = (array) => {
@@ -169,6 +183,14 @@ const checkAnswer = (event) => {
   event.target.parentElement.classList.add("game__questions--unclickable");
 
   if (questionCounter === questionAmount) {
+    const resultsButton = document.getElementsByClassName(
+      "game__navigate--results"
+    );
+
+    for (button of resultsButton) {
+      button.classList.add("game__navigate--results--show");
+    }
+
     endGame();
   }
 };
@@ -191,8 +213,12 @@ const prevQuestion = () => {
   questionIndex -= 1;
 };
 
-const endGame = () => {
+const showResults = () => {
   gameEl[0].classList.add("game--hidden");
+  resultsEl[0].classList.remove("results--hidden");
+};
+
+const endGame = () => {
   resultsEl[0].classList.add("results--format");
   resetEl.classList.add("game__reset--hidden");
 
@@ -218,7 +244,7 @@ const endGame = () => {
   reviewButton.classList.add("game__navigate");
   reviewButton.type = "button";
   reviewButton.value = "review";
-  reviewButton.addEventListener("click", () => reviewQuestions(reviewButton));
+  reviewButton.addEventListener("click", reviewQuestions);
 
   resultsEl[0].appendChild(resultStatement);
   resultsEl[0].appendChild(resultsFeedback);
@@ -266,8 +292,9 @@ const newQuiz = () => {
 
 resetEl.addEventListener("click", newQuiz);
 
-const reviewQuestions = (button) => {
+const reviewQuestions = () => {
   resultsEl[0].classList.add("results--hidden");
   gameEl[0].classList.remove("game--hidden");
-  button.classList.add("results__button--hidden");
 };
+
+getCategories();

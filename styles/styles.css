@@ -175,6 +175,7 @@ body {
   background-color: red;
 }
 .game__navigate-container {
+  text-align: center;
   margin: 20px 0 50px 0;
 }
 .game__navigate {
@@ -198,6 +199,17 @@ body {
 .game__navigate--prev:hover {
   color: red;
   transform: scale(1.1);
+}
+.game__navigate--results {
+  display: none;
+  margin-top: 20px;
+}
+.game__navigate--results:hover {
+  color: brown;
+  transform: scale(1.1);
+}
+.game__navigate--results--show {
+  display: block;
 }
 .game__reset {
   position: absolute;
@@ -254,4 +266,7 @@ body {
 .results__button:hover {
   color: green;
   transform: scale(1.1);
+}
+.results--hidden {
+  display: none;
 }/*# sourceMappingURL=styles.css.map */

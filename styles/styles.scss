@@ -189,6 +189,7 @@ body {
   }
 
   &__navigate-container {
+    text-align: center;
     margin: 20px 0 50px 0;
   }
 
@@ -213,6 +214,19 @@ body {
       &:hover {
         color: red;
         transform: scale(1.1);
+      }
+    }
+
+    &--results {
+      display: none;
+      margin-top: 20px;
+      &:hover {
+        color: brown;
+        transform: scale(1.1);
+      }
+
+      &--show {
+        display: block;
       }
     }
   }
@@ -280,5 +294,9 @@ body {
       color: green;
       transform: scale(1.1);
     }
+  }
+
+  &--hidden {
+    display: none;
   }
 }
