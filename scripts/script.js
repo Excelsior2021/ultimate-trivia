@@ -144,6 +144,10 @@ const createQuestions = (results) => {
       prevButton.value = "prev";
       prevButton.addEventListener("click", prevQuestion);
       buttonDiv.appendChild(prevButton);
+
+      i === questionAmount
+        ? prevButton.classList.add("game__navigate--prev--format")
+        : null;
     }
 
     if (i !== questionAmount) {
@@ -313,6 +317,7 @@ const restart = () => {
   gameEl[0].innerHTML = "";
   gameEl[0].classList.remove("game--format");
   form[0].classList.remove("form--hidden");
+  messageEl.classList.remove("message--hidden");
 };
 
 const newQuiz = () => {

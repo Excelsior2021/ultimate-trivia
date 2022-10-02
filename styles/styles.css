@@ -196,6 +196,9 @@ body {
 .game__navigate--prev {
   margin-right: 10px;
 }
+.game__navigate--prev--format {
+  margin: 0;
+}
 .game__navigate--prev:hover {
   color: red;
   transform: scale(1.1);

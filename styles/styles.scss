@@ -211,6 +211,11 @@ body {
 
     &--prev {
       margin-right: 10px;
+
+      &--format {
+        margin: 0;
+      }
+
       &:hover {
         color: red;
         transform: scale(1.1);
