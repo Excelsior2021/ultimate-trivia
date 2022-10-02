@@ -81,7 +81,7 @@ const noData = () => {
   button.innerText = "go back";
   button.classList.add("no-data__button");
   button.classList.add("game__navigate");
-  button.addEventListener("click", newQuiz);
+  button.addEventListener("click", restart);
 
   gameEl[0].appendChild(message);
   gameEl[0].appendChild(button);
@@ -320,13 +320,7 @@ const restart = () => {
   messageEl.classList.remove("message--hidden");
 };
 
-const newQuiz = () => {
-  gameEl[0].classList.add("game--hidden");
-  form[0].classList.remove("form--hidden");
-  resetEl.classList.add("game__reset--hidden");
-};
-
-resetEl.addEventListener("click", newQuiz);
+resetEl.addEventListener("click", restart);
 
 const reviewQuestions = () => {
   resultsEl[0].classList.add("results--hidden");
