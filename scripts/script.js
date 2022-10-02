@@ -183,7 +183,8 @@ const htmlEntities = (str) => {
     .replace(/&Delta;/g, "Δ")
     .replace(/&Deg;/g, "°")
     .replace(/&ldquo;/g, "“")
-    .replace(/&rdquo;/g, "”");
+    .replace(/&rdquo;/g, "”")
+    .replace(/&shy;/g, "-");
 };
 
 const shuffleArray = (array) => {
