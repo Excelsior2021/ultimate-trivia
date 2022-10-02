@@ -12,19 +12,21 @@ let questionCounter = 0;
 let questionAmount;
 let questionIndex = 0;
 
-const getCategories = () => {
-  axios
-    .get("https://opentdb.com/api_category.php")
-    .then((res) => res.data.trivia_categories)
-    .then((categories) =>
-      categories.map((category, value) => {
-        value += 9;
-        const optionEl = document.createElement("option");
-        optionEl.value = value;
-        optionEl.innerText = category.name;
-        categoriesEl.appendChild(optionEl);
-      })
-    );
+const getCategories = async () => {
+  try {
+    const response = await axios.get("https://opentdb.com/api_category.php");
+    const categories = response.data.trivia_categories;
+
+    categories.map((category, value) => {
+      value += 9;
+      const optionEl = document.createElement("option");
+      optionEl.value = value;
+      optionEl.innerText = category.name;
+      categoriesEl.appendChild(optionEl);
+    });
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 form[0].addEventListener("submit", (event) => {
