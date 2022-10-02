@@ -37,109 +37,138 @@ form[0].addEventListener("submit", (event) => {
   questionCounter = 0;
   questionIndex = 0;
 
+  getQuestions(event);
+});
+
+const getQuestions = async (event) => {
   const amount = event.target.questions_num.value;
   questionAmount = parseInt(amount);
   const category = event.target.categories.value;
   const difficulty = event.target.difficulty.value;
   const type = event.target.question_type.value;
 
-  axios
-    .get(
+  try {
+    const response = await axios.get(
       `https://opentdb.com/api.php?amount=${amount}&category=${category}&difficulty=${difficulty}&type=${type}`
-    )
-    .then((res) => {
-      form[0].classList.add("form--hidden");
-      gameEl[0].classList.remove("game--hidden");
-      gameEl[0].classList.add("game--format");
-      resetEl.classList.remove("game__reset--hidden");
-      messageEl.classList.add("message--hidden");
-      return res.data.results;
-    })
-    .then((results) => {
-      results.forEach((obj, i) => {
-        i += 1;
-        const answers = [];
-        const questionDiv = document.createElement("div");
-        questionDiv.classList.add("game__questions");
-        if (i !== 1) {
-          questionDiv.classList.add("game__questions--hidden");
-        }
-        const questionTitle = document.createElement("h2");
-        questionTitle.classList.add("game__title");
-        questionTitle.innerText = `Question ${i}`;
-        const questionEl = document.createElement("p");
-        questionEl.classList.add("game__question");
-        const parsedQ = htmlEntities(obj.question);
-        questionEl.innerText = parsedQ;
+    );
 
-        obj.incorrect_answers.forEach((ans) => {
-          const ansEl = document.createElement("input");
-          ansEl.type = "button";
-          ansEl.classList.add("game__answer");
-          const parsed = htmlEntities(ans);
-          ansEl.name = false;
-          ansEl.value = parsed;
-          ansEl.innerText = parsed;
-          ansEl.addEventListener("click", checkAnswer);
-          answers.push(ansEl);
-        });
+    form[0].classList.add("form--hidden");
+    gameEl[0].classList.remove("game--hidden");
+    gameEl[0].classList.add("game--format");
+    resultsEl[0].classList.add("results--hidden");
+    resetEl.classList.remove("game__reset--hidden");
+    messageEl.classList.add("message--hidden");
 
-        const ansEl = document.createElement("input");
-        ansEl.type = "button";
-        ansEl.classList.add("game__answer");
-        const parsedA = htmlEntities(obj.correct_answer);
-        ansEl.name = true;
-        ansEl.value = parsedA;
-        ansEl.addEventListener("click", checkAnswer);
-        answers.push(ansEl);
+    const results = response.data.results;
 
-        const shuffledAnswers = shuffleArray(answers);
-        questionDiv.appendChild(questionTitle);
-        questionDiv.appendChild(questionEl);
-        shuffledAnswers.forEach((ans) => questionDiv.appendChild(ans));
+    response.data.response_code === 1 ? noData() : null;
 
-        const buttonsDiv = document.createElement("div");
-        const buttonDiv = document.createElement("div");
-        const buttonDivTwo = document.createElement("div");
+    createQuestions(results);
+  } catch (error) {
+    console.log(error);
+  }
+};
 
-        buttonsDiv.classList.add("game__navigate-container");
+const noData = () => {
+  const message = document.createElement("p");
+  message.classList.add("no-data__message");
+  message.innerText =
+    "There were no questions for your chosen settings. Try reducing the number of questions in the settings.";
 
-        if (i !== 1) {
-          const prevButton = document.createElement("input");
-          prevButton.classList.add("game__navigate");
-          prevButton.classList.add("game__navigate--prev");
-          prevButton.type = "button";
-          prevButton.value = "prev";
-          prevButton.addEventListener("click", prevQuestion);
-          buttonDiv.appendChild(prevButton);
-        }
+  const button = document.createElement("button");
+  button.innerText = "go back";
+  button.classList.add("no-data__button");
+  button.classList.add("game__navigate");
+  button.addEventListener("click", newQuiz);
 
-        if (i !== questionAmount) {
-          const nextButton = document.createElement("input");
-          nextButton.classList.add("game__navigate");
-          nextButton.classList.add("game__navigate--next");
-          nextButton.type = "button";
-          nextButton.value = "next";
-          nextButton.addEventListener("click", nextQuestion);
-          buttonDiv.appendChild(nextButton);
-        }
+  gameEl[0].appendChild(message);
+  gameEl[0].appendChild(button);
+};
 
-        const viewResults = document.createElement("input");
-        viewResults.classList.add("game__navigate");
-        viewResults.classList.add("game__navigate--results");
-        viewResults.type = "button";
-        viewResults.value = "view results";
-        viewResults.addEventListener("click", showResults);
-        buttonDivTwo.appendChild(viewResults);
+const createQuestions = (results) => {
+  results.forEach((obj, i) => {
+    i += 1;
+    const answers = [];
+    const questionDiv = document.createElement("div");
+    questionDiv.classList.add("game__questions");
+    if (i !== 1) {
+      questionDiv.classList.add("game__questions--hidden");
+    }
+    const questionTitle = document.createElement("h2");
+    questionTitle.classList.add("game__title");
+    questionTitle.innerText = `Question ${i}`;
+    const questionEl = document.createElement("p");
+    questionEl.classList.add("game__question");
+    const parsedQ = htmlEntities(obj.question);
+    questionEl.innerText = parsedQ;
 
-        buttonsDiv.appendChild(buttonDiv);
-        buttonsDiv.appendChild(buttonDivTwo);
-
-        questionDiv.appendChild(buttonsDiv);
-        questionsEl[0].appendChild(questionDiv);
-      });
+    obj.incorrect_answers.forEach((ans) => {
+      const ansEl = document.createElement("input");
+      ansEl.type = "button";
+      ansEl.classList.add("game__answer");
+      const parsed = htmlEntities(ans);
+      ansEl.name = false;
+      ansEl.value = parsed;
+      ansEl.innerText = parsed;
+      ansEl.addEventListener("click", checkAnswer);
+      answers.push(ansEl);
     });
-});
+
+    const ansEl = document.createElement("input");
+    ansEl.type = "button";
+    ansEl.classList.add("game__answer");
+    const parsedA = htmlEntities(obj.correct_answer);
+    ansEl.name = true;
+    ansEl.value = parsedA;
+    ansEl.addEventListener("click", checkAnswer);
+    answers.push(ansEl);
+
+    const shuffledAnswers = shuffleArray(answers);
+    questionDiv.appendChild(questionTitle);
+    questionDiv.appendChild(questionEl);
+    shuffledAnswers.forEach((ans) => questionDiv.appendChild(ans));
+
+    const buttonsDiv = document.createElement("div");
+    const buttonDiv = document.createElement("div");
+    const buttonDivTwo = document.createElement("div");
+
+    buttonsDiv.classList.add("game__navigate-container");
+
+    if (i !== 1) {
+      const prevButton = document.createElement("input");
+      prevButton.classList.add("game__navigate");
+      prevButton.classList.add("game__navigate--prev");
+      prevButton.type = "button";
+      prevButton.value = "prev";
+      prevButton.addEventListener("click", prevQuestion);
+      buttonDiv.appendChild(prevButton);
+    }
+
+    if (i !== questionAmount) {
+      const nextButton = document.createElement("input");
+      nextButton.classList.add("game__navigate");
+      nextButton.classList.add("game__navigate--next");
+      nextButton.type = "button";
+      nextButton.value = "next";
+      nextButton.addEventListener("click", nextQuestion);
+      buttonDiv.appendChild(nextButton);
+    }
+
+    const viewResults = document.createElement("input");
+    viewResults.classList.add("game__navigate");
+    viewResults.classList.add("game__navigate--results");
+    viewResults.type = "button";
+    viewResults.value = "view results";
+    viewResults.addEventListener("click", showResults);
+    buttonDivTwo.appendChild(viewResults);
+
+    buttonsDiv.appendChild(buttonDiv);
+    buttonsDiv.appendChild(buttonDivTwo);
+
+    questionDiv.appendChild(buttonsDiv);
+    questionsEl[0].appendChild(questionDiv);
+  });
+};
 
 const htmlEntities = (str) => {
   return str
@@ -219,7 +248,6 @@ const showResults = () => {
 };
 
 const endGame = () => {
-  resultsEl[0].classList.add("results--format");
   resetEl.classList.add("game__reset--hidden");
 
   const message = feedback();
@@ -250,6 +278,8 @@ const endGame = () => {
   resultsEl[0].appendChild(resultsFeedback);
   resultsEl[0].appendChild(reviewButton);
   resultsEl[0].appendChild(resultsButton);
+
+  console.log(resultsEl[0]);
 };
 
 const feedback = () => {
@@ -259,7 +289,6 @@ const feedback = () => {
   switch (true) {
     case performance >= 0.9:
       message = "Exceptional!";
-      console.log("test");
       break;
     case performance >= 0.7:
       message = "Very good! Well done.";
@@ -281,7 +310,6 @@ const restart = () => {
   gameEl[0].innerHTML = "";
   gameEl[0].classList.remove("game--format");
   form[0].classList.remove("form--hidden");
-  resultsEl[0].classList.remove("results--format");
 };
 
 const newQuiz = () => {

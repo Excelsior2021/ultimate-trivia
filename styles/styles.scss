@@ -258,13 +258,10 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  margin: 0 auto;
 
   @media (min-width: 500px) {
     max-width: 500px;
-  }
-
-  &--format {
-    margin: 0 auto;
   }
 
   &__statement,
@@ -298,5 +295,23 @@ body {
 
   &--hidden {
     display: none;
+  }
+}
+
+.no-data {
+  &__message {
+    text-align: center;
+    font-size: 2rem;
+    margin-top: 100px;
+  }
+
+  &__button {
+    width: fit-content;
+    margin: 20px auto;
+
+    &:hover {
+      color: orange;
+      transform: scale(1.1);
+    }
   }
 }

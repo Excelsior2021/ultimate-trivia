@@ -234,14 +234,12 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  margin: 0 auto;
 }
 @media (min-width: 500px) {
   .results {
     max-width: 500px;
   }
-}
-.results--format {
-  margin: 0 auto;
 }
 .results__statement, .results__feedback {
   text-align: center;
@@ -269,4 +267,20 @@ body {
 }
 .results--hidden {
   display: none;
+}
+
+.no-data__message {
+  text-align: center;
+  font-size: 2rem;
+  margin-top: 100px;
+}
+.no-data__button {
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  margin: 20px auto;
+}
+.no-data__button:hover {
+  color: orange;
+  transform: scale(1.1);
 }/*# sourceMappingURL=styles.css.map */
