@@ -1,0 +1,23 @@
+{
+  "name": "ultimate-trivia",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Excelsior2021/ultimate-trivia.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Excelsior2021/ultimate-trivia/issues"
+  },
+  "homepage": "https://github.com/Excelsior2021/ultimate-trivia#readme",
+  "dependencies": {
+    "typescript": "^4.9.3"
+  }
+}
