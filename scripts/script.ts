@@ -1,7 +1,6 @@
 const categoriesEl = document.getElementById("categories")!;
-const form = document.getElementById("form")!;
-const questionsEl = document.getElementsByClassName("game")!;
-const resultsEl = document.getElementsByClassName("results")!;
+const form = document.getElementById("form") as HTMLFormElement;
+const resultsEl = document.getElementById("results")!;
 const gameEl = document.getElementById("game")!;
 const resetEl = document.getElementById("game-reset")!;
 const messageEl = document.getElementById("message")!;
@@ -17,9 +16,19 @@ type categoryObj = {
   name: string;
 };
 
+type resultsObj = {
+  category: string;
+  correct_answer: string;
+  difficulty: string;
+  incorrect_answers: string[];
+  question: string;
+  type: string;
+};
+
 const getCategories = async () => {
   try {
     const { data } = await axios.get("https://opentdb.com/api_category.php");
+
     const categories: categoryObj[] = data.trivia_categories;
 
     categories.map((category, value) => {
@@ -37,40 +46,38 @@ const getCategories = async () => {
 form.addEventListener("submit", event => {
   event.preventDefault();
 
-  questionsEl[0].innerHTML = "";
-  resultsEl[0].innerHTML = "";
+  gameEl.innerHTML = "";
+  resultsEl.innerHTML = "";
   correct = 0;
   incorrect = 0;
   questionCounter = 0;
   questionIndex = 0;
 
-  getQuestions(event);
+  getQuestions();
 });
 
-const getQuestions = async event => {
-  const amount = event.target.questions_num.value;
+const getQuestions = async () => {
+  const amount = form.questions_num.value;
   questionAmount = parseInt(amount);
-  const category = event.target.categories.value;
-  const difficulty = event.target.difficulty.value;
-  const type = event.target.question_type.value;
+  const category = form.categories.value;
+  const difficulty = form.difficulty.value;
+  const type = form.question_type.value;
 
   try {
-    const response = await axios.get(
+    const { data } = await axios.get(
       `https://opentdb.com/api.php?amount=${amount}&category=${category}&difficulty=${difficulty}&type=${type}`
     );
 
     form.classList.add("form--hidden");
     gameEl.classList.remove("game--hidden");
     gameEl.classList.add("game--format");
-    resultsEl[0].classList.add("results--hidden");
+    resultsEl.classList.add("results--hidden");
     resetEl.classList.remove("game__reset--hidden");
     messageEl.classList.add("message--hidden");
 
-    const results = response.data.results;
+    data.response_code === 1 ? noData() : null;
 
-    response.data.response_code === 1 ? noData() : null;
-
-    createQuestions(results);
+    createQuestions(data.results);
   } catch (error) {
     console.log(error);
   }
@@ -92,10 +99,10 @@ const noData = () => {
   gameEl.appendChild(button);
 };
 
-const createQuestions = results => {
+const createQuestions = (results: resultsObj[]) => {
   results.forEach((obj, i) => {
     i += 1;
-    const answers = [];
+    const answers: HTMLInputElement[] = [];
     const questionDiv = document.createElement("div");
     questionDiv.classList.add("game__questions");
     if (i !== 1) {
@@ -114,10 +121,10 @@ const createQuestions = results => {
       ansEl.type = "button";
       ansEl.classList.add("game__answer");
       const parsed = htmlEntities(ans);
-      ansEl.name = false;
+      ansEl.name = "false";
       ansEl.value = parsed;
       ansEl.innerText = parsed;
-      ansEl.addEventListener("click", checkAnswer);
+      ansEl.addEventListener("click", event => checkAnswer(event, answers));
       answers.push(ansEl);
     });
 
@@ -125,9 +132,9 @@ const createQuestions = results => {
     ansEl.type = "button";
     ansEl.classList.add("game__answer");
     const parsedA = htmlEntities(obj.correct_answer);
-    ansEl.name = true;
+    ansEl.name = "true";
     ansEl.value = parsedA;
-    ansEl.addEventListener("click", checkAnswer);
+    ansEl.addEventListener("click", event => checkAnswer(event, answers));
     answers.push(ansEl);
 
     const shuffledAnswers = shuffleArray(answers);
@@ -177,11 +184,11 @@ const createQuestions = results => {
     buttonsDiv.appendChild(buttonDivTwo);
 
     questionDiv.appendChild(buttonsDiv);
-    questionsEl[0].appendChild(questionDiv);
+    gameEl.appendChild(questionDiv);
   });
 };
 
-const htmlEntities = str => {
+const htmlEntities = (str: string) => {
   return str
     .replace(/&amp;/g, "&")
     .replace(/&lt;/g, "<")
@@ -196,7 +203,7 @@ const htmlEntities = str => {
     .replace(/&shy;/g, "-");
 };
 
-const shuffleArray = array => {
+const shuffleArray = (array: HTMLInputElement[]) => {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     const temp = array[i];
@@ -206,29 +213,32 @@ const shuffleArray = array => {
   return array;
 };
 
-const checkAnswer = event => {
+const checkAnswer = (event: MouseEvent, answers: HTMLInputElement[]) => {
   questionCounter += 1;
-  if (event.target.name === "true") {
-    event.target.classList.add("game__answer--correct");
+
+  const answer = event.target as HTMLInputElement;
+
+  if (answer.name === "true") {
+    answer.classList.add("game__answer--correct");
     correct += 1;
   } else {
-    event.target.classList.add("game__answer--incorrect");
+    answer.classList.add("game__answer--incorrect");
     incorrect += 1;
-    for (let element of event.target.parentNode.children) {
+    for (const element of answers) {
       if (element.name === "true") {
         element.classList.add("game__answer--correct");
+        break;
       }
     }
   }
-
-  event.target.parentElement.classList.add("game__questions--unclickable");
+  answer.parentElement!.classList.add("game__questions--unclickable");
 
   if (questionCounter === questionAmount) {
     const resultsButton = document.getElementsByClassName(
       "game__navigate--results"
     );
 
-    for (button of resultsButton) {
+    for (const button of resultsButton) {
       button.classList.add("game__navigate--results--show");
     }
 
@@ -237,7 +247,7 @@ const checkAnswer = event => {
 };
 
 const nextQuestion = () => {
-  const gameEl = document.getElementsByClassName("game");
+  const gameEl = document.getElementById("game")!;
   gameEl.children[questionIndex].classList.add("game__questions--hidden");
   gameEl.children[questionIndex + 1].classList.remove(
     "game__questions--hidden"
@@ -246,7 +256,7 @@ const nextQuestion = () => {
 };
 
 const prevQuestion = () => {
-  const gameEl = document.getElementsByClassName("game");
+  const gameEl = document.getElementById("game")!;
   gameEl.children[questionIndex].classList.add("game__questions--hidden");
   gameEl.children[questionIndex - 1].classList.remove(
     "game__questions--hidden"
@@ -256,7 +266,7 @@ const prevQuestion = () => {
 
 const showResults = () => {
   gameEl.classList.add("game--hidden");
-  resultsEl[0].classList.remove("results--hidden");
+  resultsEl.classList.remove("results--hidden");
 };
 
 const endGame = () => {
@@ -286,12 +296,10 @@ const endGame = () => {
   reviewButton.value = "review";
   reviewButton.addEventListener("click", reviewQuestions);
 
-  resultsEl[0].appendChild(resultStatement);
-  resultsEl[0].appendChild(resultsFeedback);
-  resultsEl[0].appendChild(reviewButton);
-  resultsEl[0].appendChild(resultsButton);
-
-  console.log(resultsEl[0]);
+  resultsEl.appendChild(resultStatement);
+  resultsEl.appendChild(resultsFeedback);
+  resultsEl.appendChild(reviewButton);
+  resultsEl.appendChild(resultsButton);
 };
 
 const feedback = () => {
@@ -318,7 +326,7 @@ const feedback = () => {
 };
 
 const restart = () => {
-  resultsEl[0].innerHTML = "";
+  resultsEl.innerHTML = "";
   gameEl.innerHTML = "";
   gameEl.classList.remove("game--format");
   form.classList.remove("form--hidden");
@@ -328,7 +336,7 @@ const restart = () => {
 resetEl.addEventListener("click", restart);
 
 const reviewQuestions = () => {
-  resultsEl[0].classList.add("results--hidden");
+  resultsEl.classList.add("results--hidden");
   gameEl.classList.remove("game--hidden");
 };
 

@@ -10,8 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 const categoriesEl = document.getElementById("categories");
 const form = document.getElementById("form");
-const questionsEl = document.getElementsByClassName("game");
-const resultsEl = document.getElementsByClassName("results");
+const resultsEl = document.getElementById("results");
 const gameEl = document.getElementById("game");
 const resetEl = document.getElementById("game-reset");
 const messageEl = document.getElementById("message");
@@ -38,31 +37,30 @@ const getCategories = () => __awaiter(void 0, void 0, void 0, function* () {
 });
 form.addEventListener("submit", event => {
     event.preventDefault();
-    questionsEl[0].innerHTML = "";
-    resultsEl[0].innerHTML = "";
+    gameEl.innerHTML = "";
+    resultsEl.innerHTML = "";
     correct = 0;
     incorrect = 0;
     questionCounter = 0;
     questionIndex = 0;
-    getQuestions(event);
+    getQuestions();
 });
-const getQuestions = (event) => __awaiter(void 0, void 0, void 0, function* () {
-    const amount = event.target.questions_num.value;
+const getQuestions = () => __awaiter(void 0, void 0, void 0, function* () {
+    const amount = form.questions_num.value;
     questionAmount = parseInt(amount);
-    const category = event.target.categories.value;
-    const difficulty = event.target.difficulty.value;
-    const type = event.target.question_type.value;
+    const category = form.categories.value;
+    const difficulty = form.difficulty.value;
+    const type = form.question_type.value;
     try {
-        const response = yield axios.get(`https://opentdb.com/api.php?amount=${amount}&category=${category}&difficulty=${difficulty}&type=${type}`);
+        const { data } = yield axios.get(`https://opentdb.com/api.php?amount=${amount}&category=${category}&difficulty=${difficulty}&type=${type}`);
         form.classList.add("form--hidden");
         gameEl.classList.remove("game--hidden");
         gameEl.classList.add("game--format");
-        resultsEl[0].classList.add("results--hidden");
+        resultsEl.classList.add("results--hidden");
         resetEl.classList.remove("game__reset--hidden");
         messageEl.classList.add("message--hidden");
-        const results = response.data.results;
-        response.data.response_code === 1 ? noData() : null;
-        createQuestions(results);
+        data.response_code === 1 ? noData() : null;
+        createQuestions(data.results);
     }
     catch (error) {
         console.log(error);
@@ -81,7 +79,7 @@ const noData = () => {
     gameEl.appendChild(message);
     gameEl.appendChild(button);
 };
-const createQuestions = results => {
+const createQuestions = (results) => {
     results.forEach((obj, i) => {
         i += 1;
         const answers = [];
@@ -102,19 +100,19 @@ const createQuestions = results => {
             ansEl.type = "button";
             ansEl.classList.add("game__answer");
             const parsed = htmlEntities(ans);
-            ansEl.name = false;
+            ansEl.name = "false";
             ansEl.value = parsed;
             ansEl.innerText = parsed;
-            ansEl.addEventListener("click", checkAnswer);
+            ansEl.addEventListener("click", event => checkAnswer(event, answers));
             answers.push(ansEl);
         });
         const ansEl = document.createElement("input");
         ansEl.type = "button";
         ansEl.classList.add("game__answer");
         const parsedA = htmlEntities(obj.correct_answer);
-        ansEl.name = true;
+        ansEl.name = "true";
         ansEl.value = parsedA;
-        ansEl.addEventListener("click", checkAnswer);
+        ansEl.addEventListener("click", event => checkAnswer(event, answers));
         answers.push(ansEl);
         const shuffledAnswers = shuffleArray(answers);
         questionDiv.appendChild(questionTitle);
@@ -155,10 +153,10 @@ const createQuestions = results => {
         buttonsDiv.appendChild(buttonDiv);
         buttonsDiv.appendChild(buttonDivTwo);
         questionDiv.appendChild(buttonsDiv);
-        questionsEl[0].appendChild(questionDiv);
+        gameEl.appendChild(questionDiv);
     });
 };
-const htmlEntities = str => {
+const htmlEntities = (str) => {
     return str
         .replace(/&amp;/g, "&")
         .replace(/&lt;/g, "<")
@@ -172,7 +170,7 @@ const htmlEntities = str => {
         .replace(/&rdquo;/g, "”")
         .replace(/&shy;/g, "-");
 };
-const shuffleArray = array => {
+const shuffleArray = (array) => {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         const temp = array[i];
@@ -181,45 +179,47 @@ const shuffleArray = array => {
     }
     return array;
 };
-const checkAnswer = event => {
+const checkAnswer = (event, answers) => {
     questionCounter += 1;
-    if (event.target.name === "true") {
-        event.target.classList.add("game__answer--correct");
+    const answer = event.target;
+    if (answer.name === "true") {
+        answer.classList.add("game__answer--correct");
         correct += 1;
     }
     else {
-        event.target.classList.add("game__answer--incorrect");
+        answer.classList.add("game__answer--incorrect");
         incorrect += 1;
-        for (let element of event.target.parentNode.children) {
+        for (const element of answers) {
             if (element.name === "true") {
                 element.classList.add("game__answer--correct");
+                break;
             }
         }
     }
-    event.target.parentElement.classList.add("game__questions--unclickable");
+    answer.parentElement.classList.add("game__questions--unclickable");
     if (questionCounter === questionAmount) {
         const resultsButton = document.getElementsByClassName("game__navigate--results");
-        for (button of resultsButton) {
+        for (const button of resultsButton) {
             button.classList.add("game__navigate--results--show");
         }
         endGame();
     }
 };
 const nextQuestion = () => {
-    const gameEl = document.getElementsByClassName("game");
+    const gameEl = document.getElementById("game");
     gameEl.children[questionIndex].classList.add("game__questions--hidden");
     gameEl.children[questionIndex + 1].classList.remove("game__questions--hidden");
     questionIndex += 1;
 };
 const prevQuestion = () => {
-    const gameEl = document.getElementsByClassName("game");
+    const gameEl = document.getElementById("game");
     gameEl.children[questionIndex].classList.add("game__questions--hidden");
     gameEl.children[questionIndex - 1].classList.remove("game__questions--hidden");
     questionIndex -= 1;
 };
 const showResults = () => {
     gameEl.classList.add("game--hidden");
-    resultsEl[0].classList.remove("results--hidden");
+    resultsEl.classList.remove("results--hidden");
 };
 const endGame = () => {
     resetEl.classList.add("game__reset--hidden");
@@ -243,11 +243,10 @@ const endGame = () => {
     reviewButton.type = "button";
     reviewButton.value = "review";
     reviewButton.addEventListener("click", reviewQuestions);
-    resultsEl[0].appendChild(resultStatement);
-    resultsEl[0].appendChild(resultsFeedback);
-    resultsEl[0].appendChild(reviewButton);
-    resultsEl[0].appendChild(resultsButton);
-    console.log(resultsEl[0]);
+    resultsEl.appendChild(resultStatement);
+    resultsEl.appendChild(resultsFeedback);
+    resultsEl.appendChild(reviewButton);
+    resultsEl.appendChild(resultsButton);
 };
 const feedback = () => {
     const performance = correct / questionAmount;
@@ -271,7 +270,7 @@ const feedback = () => {
     return message;
 };
 const restart = () => {
-    resultsEl[0].innerHTML = "";
+    resultsEl.innerHTML = "";
     gameEl.innerHTML = "";
     gameEl.classList.remove("game--format");
     form.classList.remove("form--hidden");
@@ -279,7 +278,7 @@ const restart = () => {
 };
 resetEl.addEventListener("click", restart);
 const reviewQuestions = () => {
-    resultsEl[0].classList.add("results--hidden");
+    resultsEl.classList.add("results--hidden");
     gameEl.classList.remove("game--hidden");
 };
 getCategories();
