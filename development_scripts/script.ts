@@ -1,3 +1,5 @@
+import axios from "axios";
+
 const categoriesEl = document.getElementById("categories")!;
 const form = document.getElementById("form") as HTMLFormElement;
 const resultsEl = document.getElementById("results")!;
