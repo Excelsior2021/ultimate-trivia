@@ -203,6 +203,7 @@ const htmlEntities = (str: string) => {
     .replace(/&ldquo;/g, "“")
     .replace(/&rdquo;/g, "”")
     .replace(/&shy;/g, "-")
+    .replace(/&eacute;/g, "é")
 }
 
 const shuffleArray = (array: HTMLInputElement[]) => {

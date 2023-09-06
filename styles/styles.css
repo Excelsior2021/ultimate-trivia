@@ -1,6 +1,6 @@
 @font-face {
   font-family: "Rubik Maze";
-  src: url("/assets/RubikMaze-Regular.ttf");
+  src: url("../assets/RubikMaze-Regular.ttf");
 }
 *,
 *::before,
