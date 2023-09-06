@@ -1,5 +1,7 @@
-@import url("https://fonts.googleapis.com/css2?family=Rubik+Maze&display=swap");
-
+@font-face {
+  font-family: "Rubik Maze";
+  src: url("/assets/RubikMaze-Regular.ttf");
+}
 *,
 *::before,
 *::after {
@@ -16,7 +18,6 @@ body {
   position: relative;
   font-size: 1.6rem;
   font-family: sans-serif;
-  min-width: -webkit-fit-content;
   min-width: -moz-fit-content;
   min-width: fit-content;
   min-height: 100vh;
@@ -81,8 +82,7 @@ body {
 .form__label {
   margin-bottom: 0.5rem;
 }
-.form__input,
-.form__select {
+.form__input, .form__select {
   width: 100%;
   margin-bottom: 2rem;
   padding: 0.5rem;
@@ -151,7 +151,6 @@ body {
 .game__answer {
   font-size: 1.5rem;
   background-color: white;
-  width: -webkit-fit-content;
   width: -moz-fit-content;
   width: fit-content;
   min-width: 15rem;
@@ -246,8 +245,7 @@ body {
     max-width: 500px;
   }
 }
-.results__statement,
-.results__feedback {
+.results__statement, .results__feedback {
   text-align: center;
   font-family: "Rubik Maze";
   font-weight: bold;
@@ -281,7 +279,6 @@ body {
   margin-top: 100px;
 }
 .no-data__button {
-  width: -webkit-fit-content;
   width: -moz-fit-content;
   width: fit-content;
   margin: 20px auto;
@@ -289,4 +286,4 @@ body {
 .no-data__button:hover {
   color: orange;
   transform: scale(1.1);
-} /*# sourceMappingURL=styles.css.map */
+}/*# sourceMappingURL=styles.css.map */
