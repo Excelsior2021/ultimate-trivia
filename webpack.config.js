@@ -1,8 +1,8 @@
-const path = require("path");
+const path = require("path")
 
 module.exports = {
   mode: "production",
-  entry: "./development_scripts/script.ts",
+  entry: "./development_scripts/index.ts",
   devServer: {
     static: "./dist",
   },
@@ -10,7 +10,12 @@ module.exports = {
     rules: [
       {
         test: /\.tsx?$/,
-        use: "ts-loader",
+        use: {
+          loader: "ts-loader",
+          options: {
+            transpileOnly: true,
+          },
+        },
         exclude: /node_modules/,
       },
     ],
@@ -19,7 +24,7 @@ module.exports = {
     extensions: [".tsx", ".ts", ".js"],
   },
   output: {
-    filename: "script.js",
-    path: path.resolve(__dirname, "production_scripts"),
+    filename: "index.js",
+    path: path.resolve(__dirname, "./"),
   },
-};
+}

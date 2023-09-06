@@ -1,5 +1,3 @@
-import axios from "axios"
-
 const categoriesEl = document.getElementById("categories")!
 const form = document.getElementById("form") as HTMLFormElement
 const resultsEl = document.getElementById("results")!
@@ -29,9 +27,10 @@ type resultsObj = {
 
 const getCategories = async () => {
   try {
-    const { data } = await axios.get("https://opentdb.com/api_category.php")
+    const res = await fetch("https://opentdb.com/api_category.php")
+    const { trivia_categories } = await res.json()
 
-    const categories: categoryObj[] = data.trivia_categories
+    const categories: categoryObj[] = trivia_categories
 
     categories.map((category, value) => {
       value += 9
@@ -66,9 +65,10 @@ const getQuestions = async () => {
   const type = form.question_type.value
 
   try {
-    const { data } = await axios.get(
+    const res = await fetch(
       `https://opentdb.com/api.php?amount=${amount}&category=${category}&difficulty=${difficulty}&type=${type}`
     )
+    const { results, response_code } = await res.json()
 
     form.classList.add("form--hidden")
     gameEl.classList.remove("game--hidden")
@@ -77,9 +77,9 @@ const getQuestions = async () => {
     resetEl.classList.remove("game__reset--hidden")
     messageEl.classList.add("message--hidden")
 
-    data.response_code === 1 ? noData() : null
+    response_code === 1 ? noData() : null
 
-    createQuestions(data.results)
+    createQuestions(results)
   } catch (error) {
     console.log(error)
   }
@@ -338,4 +338,38 @@ const reviewQuestions = () => {
   gameEl.classList.remove("game--hidden")
 }
 
+initializePendo(Math.floor(Math.random() * 2) ? "visitor" : "VISITOR")
 getCategories()
+
+function initializePendo(visitorID: string) {
+  console.log(visitorID)
+
+  // This function creates anonymous visitor IDs in Pendo unless you change the visitor id field to use your app's values
+  // This function uses the placeholder 'ACCOUNT-UNIQUE-ID' value for account ID unless you change the account id field to use your app's values
+  // Call this function after users are authenticated in your app and your visitor and account id values are available
+  // Please use Strings, Numbers, or Bools for value types.
+  pendo.initialize({
+    visitor: {
+      id: visitorID || "VISITOR-UNIQUE-ID", // Required if user is logged in, default creates anonymous ID
+      // email: // Recommended if using Pendo Feedback, or NPS Email
+      // full_name: // Recommended if using Pendo Feedback
+      role: "user",
+
+      // You can add any additional visitor level key-values here,
+      // as long as it's not one of the above reserved names.
+    },
+
+    // account: {
+    // id: 'ACCOUNT-UNIQUE-ID' // Required if using Pendo Feedback, default uses the value 'ACCOUNT-UNIQUE-ID'
+    // // name: // Optional
+    // // is_paying: // Recommended if using Pendo Feedback
+    // // monthly_value:// Recommended if using Pendo Feedback
+    // // planLevel: // Optional
+    // // planPrice: // Optional
+    // // creationDate: // Optional
+
+    // // You can add any additional account level key-values here,
+    // // as long as it's not one of the above reserved names.
+    // }
+  })
+}
