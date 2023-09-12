@@ -2,7 +2,7 @@ const path = require("path")
 
 module.exports = {
   mode: "production",
-  entry: "./development_scripts/index.ts",
+  entry: "./index.ts",
   devServer: {
     static: "./dist",
   },
@@ -18,13 +18,18 @@ module.exports = {
         },
         exclude: /node_modules/,
       },
+      {
+        test: /\.scss$/,
+        use: ["style-loader", "css-loader", "sass-loader"],
+        exclude: /node_modules/,
+      },
     ],
   },
   resolve: {
     extensions: [".tsx", ".ts", ".js"],
   },
   output: {
-    filename: "index.js",
-    path: path.resolve(__dirname, "./"),
+    filename: "main.js",
+    path: path.resolve(__dirname, "./dist"),
   },
 }
