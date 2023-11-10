@@ -4,7 +4,7 @@ module.exports = {
   mode: "production",
   entry: "./index.ts",
   devServer: {
-    static: "./dist",
+    static: "./",
   },
   module: {
     rules: [

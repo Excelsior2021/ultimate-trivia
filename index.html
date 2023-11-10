@@ -5,31 +5,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" href="./assets/favicon.ico" />
-    <script defer>
-      ;(function (apiKey) {
-        ;(function (p, e, n, d, o) {
-          var v, w, x, y, z
-          o = p[d] = p[d] || {}
-          o._q = o._q || []
-          v = ["initialize", "identify", "updateOptions", "pageLoad", "track"]
-          for (w = 0, x = v.length; w < x; ++w)
-            (function (m) {
-              o[m] =
-                o[m] ||
-                function () {
-                  o._q[m === v[0] ? "unshift" : "push"](
-                    [m].concat([].slice.call(arguments, 0))
-                  )
-                }
-            })(v[w])
-          y = e.createElement(n)
-          y.async = !0
-          y.src = "https://cdn.pendo.io/agent/static/" + apiKey + "/pendo.js"
-          z = e.getElementsByTagName(n)[0]
-          z.parentNode.insertBefore(y, z)
-        })(window, document, "script", "pendo")
-      })("6645e56e-d9c1-4a47-4ea3-901e204a10b5")
-    </script>
     <script src="./dist/main.js" defer></script>
     <title>Ultimate Trivia</title>
   </head>
@@ -52,7 +27,7 @@
         Answer all questions to complete the quiz. If unsure, just guess!
       </p>
 
-      <form action="/" id="form" class="form">
+      <form id="form" class="form">
         <h2 class="form__title">Settings</h2>
         <label for="questions_num" class="form__label"
           >Number of Questions</label
@@ -84,7 +59,7 @@
           <option value="multiple">Multiple Choice</option>
           <option value="boolean">True/False</option>
         </select>
-        <button class="form__button">start</button>
+        <button id="start-button" class="form__button">start</button>
       </form>
 
       <div id="game" class="game"></div>

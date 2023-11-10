@@ -2,6 +2,7 @@ import "./styles.scss"
 
 const categoriesEl = document.getElementById("categories")!
 const form = document.getElementById("form") as HTMLFormElement
+const startButton = document.getElementById("start-button") as HTMLButtonElement
 const resultsEl = document.getElementById("results")!
 const gameEl = document.getElementById("game")!
 const resetEl = document.getElementById("game-reset")!
@@ -56,6 +57,7 @@ form.addEventListener("submit", event => {
   questionCounter = 0
   questionIndex = 0
 
+  startButton.disabled = true
   getQuestions()
 })
 
@@ -332,6 +334,8 @@ const restart = () => {
   gameEl.classList.remove("game--format")
   form.classList.remove("form--hidden")
   messageEl.classList.remove("message--hidden")
+  resetEl.classList.add("game__reset--hidden")
+  startButton.disabled = false
 }
 
 resetEl.addEventListener("click", restart)
@@ -341,38 +345,4 @@ const reviewQuestions = () => {
   gameEl.classList.remove("game--hidden")
 }
 
-initializePendo(Math.floor(Math.random() * 2) ? "visitor" : "VISITOR")
 getCategories()
-
-function initializePendo(visitorID: string) {
-  console.log(visitorID)
-
-  // This function creates anonymous visitor IDs in Pendo unless you change the visitor id field to use your app's values
-  // This function uses the placeholder 'ACCOUNT-UNIQUE-ID' value for account ID unless you change the account id field to use your app's values
-  // Call this function after users are authenticated in your app and your visitor and account id values are available
-  // Please use Strings, Numbers, or Bools for value types.
-  pendo.initialize({
-    visitor: {
-      id: visitorID || "VISITOR-UNIQUE-ID", // Required if user is logged in, default creates anonymous ID
-      // email: // Recommended if using Pendo Feedback, or NPS Email
-      // full_name: // Recommended if using Pendo Feedback
-      role: "user",
-
-      // You can add any additional visitor level key-values here,
-      // as long as it's not one of the above reserved names.
-    },
-
-    // account: {
-    // id: 'ACCOUNT-UNIQUE-ID' // Required if using Pendo Feedback, default uses the value 'ACCOUNT-UNIQUE-ID'
-    // // name: // Optional
-    // // is_paying: // Recommended if using Pendo Feedback
-    // // monthly_value:// Recommended if using Pendo Feedback
-    // // planLevel: // Optional
-    // // planPrice: // Optional
-    // // creationDate: // Optional
-
-    // // You can add any additional account level key-values here,
-    // // as long as it's not one of the above reserved names.
-    // }
-  })
-}
