@@ -7,6 +7,7 @@ const resultsEl = document.getElementById("results")!
 const gameEl = document.getElementById("game")!
 const resetEl = document.getElementById("game-reset")!
 const messageEl = document.getElementById("message")!
+const serverErrorMessage = "There was a server error, please try again later."
 
 let correct = 0
 let incorrect = 0
@@ -31,18 +32,22 @@ type resultsObj = {
 const getCategories = async () => {
   try {
     const res = await fetch("https://opentdb.com/api_category.php")
-    const { trivia_categories } = await res.json()
+    if (res.status === 200) {
+      const { trivia_categories } = await res.json()
 
-    const categories: categoryObj[] = trivia_categories
+      const categories: categoryObj[] = trivia_categories
 
-    categories.map((category, value) => {
-      value += 9
-      const optionEl = document.createElement("option")
-      optionEl.value = value.toString()
-      optionEl.innerText = category.name
-      categoriesEl.appendChild(optionEl)
-    })
+      categories.map((category, value) => {
+        value += 9
+        const optionEl = document.createElement("option")
+        optionEl.value = value.toString()
+        optionEl.innerText = category.name
+        categoriesEl.appendChild(optionEl)
+      })
+    } else throw new Error()
   } catch (error) {
+    clearGameScreen()
+    noData(serverErrorMessage)
     console.log(error)
   }
 }
@@ -61,6 +66,15 @@ form.addEventListener("submit", event => {
   getQuestions()
 })
 
+const clearGameScreen = () => {
+  form.classList.add("form--hidden")
+  gameEl.classList.remove("game--hidden")
+  gameEl.classList.add("game--format")
+  resultsEl.classList.add("results--hidden")
+  resetEl.classList.remove("game__reset--hidden")
+  messageEl.classList.add("message--hidden")
+}
+
 const getQuestions = async () => {
   const amount = form.questions_num.value
   questionAmount = parseInt(amount)
@@ -72,28 +86,26 @@ const getQuestions = async () => {
     const res = await fetch(
       `https://opentdb.com/api.php?amount=${amount}&category=${category}&difficulty=${difficulty}&type=${type}`
     )
-    const { results, response_code } = await res.json()
 
-    form.classList.add("form--hidden")
-    gameEl.classList.remove("game--hidden")
-    gameEl.classList.add("game--format")
-    resultsEl.classList.add("results--hidden")
-    resetEl.classList.remove("game__reset--hidden")
-    messageEl.classList.add("message--hidden")
-
-    response_code === 1 ? noData() : null
-
-    createQuestions(results)
+    if (res.status === 200) {
+      const { results, response_code } = await res.json()
+      const noDataMessage =
+        "The amount of questions you have chosen may be to high or there are no questions for your chosen settings. Try reducing the number of questions in the settings or different options."
+      clearGameScreen()
+      if (response_code === 1) noData(noDataMessage)
+      createQuestions(results)
+    } else throw new Error()
   } catch (error) {
+    clearGameScreen()
+    noData(serverErrorMessage)
     console.log(error)
   }
 }
 
-const noData = () => {
-  const message = document.createElement("p")
-  message.classList.add("no-data__message")
-  message.innerText =
-    "There were no questions for your chosen settings. Try reducing the number of questions in the settings."
+const noData = (message: string) => {
+  const messageEl = document.createElement("p")
+  messageEl.classList.add("no-data__message")
+  messageEl.innerText = message
 
   const button = document.createElement("button")
   button.innerText = "go back"
@@ -101,7 +113,7 @@ const noData = () => {
   button.classList.add("game__navigate")
   button.addEventListener("click", restart)
 
-  gameEl.appendChild(message)
+  gameEl.appendChild(messageEl)
   gameEl.appendChild(button)
 }
 
