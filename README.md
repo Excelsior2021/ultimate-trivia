@@ -6,7 +6,6 @@
     Trivia questions from a user-contributed database API.
   </p>
 
-
 <h4>
     <a href="https://excelsior2021.github.io/ultimate-trivia">View Project</a>
 </div>
