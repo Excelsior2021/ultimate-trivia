@@ -12,6 +12,8 @@
 
 <br />
 
+<img src="./assets/ultimate-trivia-demo.png" alt="battleship demo" />
+
 <!-- About the Project -->
 
 ## Motivation
