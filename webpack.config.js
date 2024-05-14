@@ -2,7 +2,7 @@ const path = require("path")
 
 module.exports = {
   mode: "production",
-  entry: "./index.ts",
+  entry: "./src/index.ts",
   devServer: {
     static: "./",
   },
@@ -26,7 +26,7 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: [".tsx", ".ts", ".js"],
+    extensions: [".ts", ".js"],
   },
   output: {
     filename: "main.js",

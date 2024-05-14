@@ -1,4 +1,5 @@
 import "./styles.scss"
+import type { categoryObj, resultsObj } from "../types"
 
 const categoriesEl = document.getElementById("categories")!
 const form = document.getElementById("form") as HTMLFormElement
@@ -14,20 +15,6 @@ let incorrect = 0
 let questionCounter = 0
 let questionAmount: number
 let questionIndex = 0
-
-type categoryObj = {
-  id: number
-  name: string
-}
-
-type resultsObj = {
-  category: string
-  correct_answer: string
-  difficulty: string
-  incorrect_answers: string[]
-  question: string
-  type: string
-}
 
 const getCategories = async () => {
   try {
@@ -206,8 +193,8 @@ const createQuestions = (results: resultsObj[]) => {
   })
 }
 
-const htmlEntities = (str: string) => {
-  return str
+const htmlEntities = (str: string) =>
+  str
     .replace(/&amp;/g, "&")
     .replace(/&lt;/g, "<")
     .replace(/&gt;/g, ">")
@@ -220,7 +207,6 @@ const htmlEntities = (str: string) => {
     .replace(/&rdquo;/g, "”")
     .replace(/&shy;/g, "-")
     .replace(/&eacute;/g, "é")
-}
 
 const shuffleArray = (array: HTMLInputElement[]) => {
   for (let i = array.length - 1; i > 0; i--) {
